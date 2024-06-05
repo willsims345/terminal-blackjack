@@ -72,7 +72,7 @@ public class Card {
     }
 
     public String toString() {
-        return card;
-        //return this.rank + " of " + this.suit + "s";
+        //return card;
+        return this.rank + " of " + this.suit + "s";
     }
 }

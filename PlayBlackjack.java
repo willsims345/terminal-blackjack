@@ -8,25 +8,27 @@ public class PlayBlackjack {
         Deck gameDeck = new Deck();
         boolean quit = false;
 
+        System.out.println("_________________________________________");
+
         System.out.println("\nPlease type one of the following commands");
-        System.out.println("- shuffle");
-        System.out.println("- draw");
-        System.out.println("- quit\n");
+        System.out.println("- s (shuffle)");
+        System.out.println("- d (draw)");
+        System.out.println("- q (quit)");
         try{
             while(!quit) {
-                System.out.print("Command: ");
+                System.out.print("\nCommand: ");
                 String command = reader.readLine();
 
                 switch(command) {
-                    case "shuffle":
-                        System.out.println("Shuffling cards...\n");
+                    case "s":
+                        System.out.println("Shuffling cards...");
                         gameDeck.shuffle();
                         break;
-                    case "draw":
+                    case "d":
                         System.out.println("Drawing top card...\n");
                         System.out.println(gameDeck.draw());
                         break;
-                    case "quit":
+                    case "q":
                         System.out.println("Quitting game...\n");
                         quit = true;
                         break;
@@ -34,8 +36,6 @@ public class PlayBlackjack {
             }
         } catch (IOException e) {
             System.out.println("An error occurred: " + e.getMessage());
-        } catch (NumberFormatException e) {
-            System.out.println("Please enter a valid number for age.");
         }
     }
 
@@ -46,7 +46,7 @@ public class PlayBlackjack {
         System.out.println("1. Start New Game");
         System.out.println("2. Help");
         System.out.println("3. Exit\n");
-        System.out.print("Please enter your choice (1-5): ");
+        System.out.print("Please enter your choice (1-3): ");
         try {
             // Read the initial command
             String command = reader.readLine();
@@ -67,8 +67,6 @@ public class PlayBlackjack {
 
         } catch (IOException e) {
             System.out.println("An error occurred: " + e.getMessage());
-        } catch (NumberFormatException e) {
-            System.out.println("Please enter a valid number for age.");
         }
     }
 }
