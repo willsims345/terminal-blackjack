@@ -7,12 +7,13 @@ public class PlayBlackjack {
     public static void playGame(BufferedReader reader) {
         Deck gameDeck = new Deck();
         boolean quit = false;
+
+        System.out.println("\nPlease type one of the following commands");
+        System.out.println("- shuffle");
+        System.out.println("- draw");
+        System.out.println("- quit\n");
         try{
             while(!quit) {
-                System.out.println("\nPlease type one of the following commands");
-                System.out.println("shuffle");
-                System.out.println("draw");
-                System.out.println("quit\n");
                 System.out.print("Command: ");
                 String command = reader.readLine();
 
