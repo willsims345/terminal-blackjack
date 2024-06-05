@@ -7,6 +7,6 @@ public class PlayBlackjack {
         System.out.println(deck.draw());
         System.out.println(deck.draw());
         System.out.println(deck.draw());
-        System.out.println(deck.draw());
+        System.out.println(deck.deck[0].rank + " " + deck.deck[0].value);
     }
 }
