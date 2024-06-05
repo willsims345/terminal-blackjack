@@ -2,13 +2,19 @@ import java.util.ArrayList;
 
 public class Player {
     ArrayList<Card> hand = new ArrayList<Card>();
-    int total;
+    int handTotal;
+    int funds;
 
     Player(){}
 
     public void addCard(Card c) {
         hand.add(c);
-        total += c.value;
+        handTotal += c.value;
+    }
+
+    public int bet(int ammount) {
+        funds -= ammount;
+        return ammount;
     }
 
     public String viewHand() {
