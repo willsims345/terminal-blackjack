@@ -70,6 +70,10 @@ public class Deck {
     }
 
     public Card draw() {
+        if(currPos == 52) {
+            System.out.println("Out of cards - shuffling deck");
+            this.shuffle();
+        }
         Card topCard = deck[currPos];
         currPos++;
         return topCard;
