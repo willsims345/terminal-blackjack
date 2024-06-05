@@ -19,15 +19,15 @@ public class PlayBlackjack {
 
                 switch(command) {
                     case "shuffle":
-                        System.out.println("Shuffling cards...");
+                        System.out.println("Shuffling cards...\n");
                         gameDeck.shuffle();
                         break;
                     case "draw":
-                        System.out.println("Drawing top card...");
+                        System.out.println("Drawing top card...\n");
                         System.out.println(gameDeck.draw());
                         break;
                     case "quit":
-                        System.out.println("Quitting game...");
+                        System.out.println("Quitting game...\n");
                         quit = true;
                         break;
                 }
