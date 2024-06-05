@@ -5,4 +5,8 @@ public class Card {
         this.rank = rank;
         this.suit = suit;
     }
+
+    public String toString() {
+        return this.rank + " of " + this.suit + "s";
+    }
 }

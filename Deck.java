@@ -1,3 +1,7 @@
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
 public class Deck {
     Card[] deck = {
         new Card('2', "spade"),
@@ -54,6 +58,21 @@ public class Deck {
         new Card('A', "heart")
     };
 
+    int currPos = 0;
+
     Deck(){}
+
+    public void shuffle() {
+        List<Card> cardList = Arrays.asList(this.deck);
+        Collections.shuffle(cardList);
+        cardList.toArray(this.deck);
+        currPos = 0;
+    }
+
+    public Card draw() {
+        Card topCard = deck[currPos];
+        currPos++;
+        return topCard;
+    }
 
 }
