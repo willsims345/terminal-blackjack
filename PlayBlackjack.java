@@ -53,8 +53,25 @@ public class PlayBlackjack {
         }
     }
 
+    public static String generateTitle() {
+        StringBuilder art = new StringBuilder();
+        
+        art.append("  _______                  _             _   ____  _            _    _            _    \n");
+        art.append(" |__   __|                (_)           | | |  _ \\| |          | |  (_)          | |   \n");
+        art.append("    | | ___ _ __ _ __ ___  _ _ __   __ _| | | |_) | | __ _  ___| | ___  __ _  ___| | __\n");
+        art.append("    | |/ _ \\ '__| '_ ` _ \\| | '_ \\ / _` | | |  _ <| |/ _` |/ __| |/ / |/ _` |/ __| |/ /\n");
+        art.append("    | |  __/ |  | | | | | | | | | | (_| | | | |_) | | (_| | (__|   <| | (_| | (__|   < \n");
+        art.append("    |_|\\___|_|  |_| |_| |_|_|_| |_|\\__,_|_| |____/|_|\\__,_|\\___|_|\\_\\ |\\__,_|\\___|_|\\_\\\n");
+        art.append("                                                                   _/ |                \n");
+        art.append("                                                                  |__/                 \n");
+        
+        return art.toString();
+    }
+
     public static void main(String[] args) {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+
+        System.out.print(generateTitle());
 
         System.out.println("Welcome to Terminal Balckjack");
         System.out.println("1. Start New Game");
