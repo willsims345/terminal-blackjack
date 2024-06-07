@@ -19,22 +19,28 @@ public class PlayBlackjack {
 
         System.out.println("\nNew game started! Shuffling cards...");
         gameDeck.shuffle();
-        player.hit(gameDeck.draw());
-        dealer.hit(gameDeck.draw());
-        player.hit(gameDeck.draw());
-        dealer.hit(gameDeck.draw());
-
-        showState(player, dealer);
 
         System.out.println("\nPlease type one of the following commands");
         System.out.println("- h (hit)");
         try{
             while(!quit) {
+                System.out.println("\nBet ammount: ");
+                int ammount = Integer.parseInt(reader.readLine()); // add try catch block later
+                player.bet(ammount);
+
+                player.hit(gameDeck.draw());
+                dealer.hit(gameDeck.draw());
+                player.hit(gameDeck.draw());
+                dealer.hit(gameDeck.draw());
+
+                showState(player, dealer);
+
                 System.out.print("\nCommand: ");
                 String command = reader.readLine();
 
                 switch(command) {
                     case "h":
+                        System.out.println(player.hit(gameDeck.draw()));
                         break;
                     case "q":
                         System.out.println("Quitting game...\n");
