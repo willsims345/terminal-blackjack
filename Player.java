@@ -7,9 +7,14 @@ public class Player {
 
     Player(){}
 
-    public void addCard(Card c) {
+    public String hit(Card c) {
         hand.add(c);
         handTotal += c.value;
+        if (handTotal > 21) {
+            return "bust!";
+        } else {
+            return "";
+        }
     }
 
     public int bet(int ammount) {
@@ -17,11 +22,33 @@ public class Player {
         return ammount;
     }
 
+    public static Player compareHands(Player a, Player b) {
+        if (a.handTotal > b.handTotal) {
+            return a;
+        } else if (b.handTotal > a.handTotal) {
+            return b;
+        } else {
+            return null;
+        }
+    }
+
     public String viewHand() {
         String handString = "";
         for(int i = 0; i < hand.size(); i++) {
-            handString += hand.get(i).toString();
+            if (i == hand.size() - 1) {
+                handString += hand.get(i).toString();
+            } else {
+                handString += hand.get(i).toString() + ", ";
+            }
         }
         return handString;
+    }
+
+    public String dealerShowing() {
+        if (hand.size() > 1) {
+            return hand.get(1).toString();
+        }
+        return "The wrong ammount of cards in hand for this operation";
+        
     }
 }

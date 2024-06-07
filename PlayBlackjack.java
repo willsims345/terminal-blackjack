@@ -4,29 +4,37 @@ import java.io.InputStreamReader;
 
 public class PlayBlackjack {
 
+    public static void showState(Player player, Player dealer) {
+        System.out.println("Your hand: " + player.viewHand());
+        System.out.println("Dealer showing: " + dealer.dealerShowing());
+    }
+
     public static void playGame(BufferedReader reader) {
         Deck gameDeck = new Deck();
         boolean quit = false;
+        Player dealer = new Player();
+        Player player = new Player();
 
         System.out.println("_________________________________________");
 
+        System.out.println("\nNew game started! Shuffling cards...");
+        gameDeck.shuffle();
+        player.hit(gameDeck.draw());
+        dealer.hit(gameDeck.draw());
+        player.hit(gameDeck.draw());
+        dealer.hit(gameDeck.draw());
+
+        showState(player, dealer);
+
         System.out.println("\nPlease type one of the following commands");
-        System.out.println("- s (shuffle)");
-        System.out.println("- d (draw)");
-        System.out.println("- q (quit)");
+        System.out.println("- h (hit)");
         try{
             while(!quit) {
                 System.out.print("\nCommand: ");
                 String command = reader.readLine();
 
                 switch(command) {
-                    case "s":
-                        System.out.println("Shuffling cards...");
-                        gameDeck.shuffle();
-                        break;
-                    case "d":
-                        System.out.println("Drawing top card...\n");
-                        System.out.println(gameDeck.draw());
+                    case "h":
                         break;
                     case "q":
                         System.out.println("Quitting game...\n");
