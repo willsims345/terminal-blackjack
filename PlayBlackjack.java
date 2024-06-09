@@ -9,7 +9,7 @@ public class PlayBlackjack {
         System.out.println("Dealer showing: " + dealer.dealerShowing());
     }
 
-    public static void playGame(BufferedReader reader) {
+    public static void playGame1(BufferedReader reader) {
         Deck gameDeck = new Deck();
         boolean quit = false;
         Player dealer = new Player();
@@ -20,12 +20,17 @@ public class PlayBlackjack {
         System.out.println("\nNew game started! Shuffling cards...");
         gameDeck.shuffle();
 
-        System.out.println("\nPlease type one of the following commands");
-        System.out.println("- h (hit)");
+        // System.out.println("\nPlease type one of the following commands");
+        // System.out.println("- h (hit)");
         try{
             while(!quit) {
                 System.out.println("\nBet ammount: ");
-                int ammount = Integer.parseInt(reader.readLine()); // add try catch block later
+                String input = reader.readLine();
+                if(input == "q") { // make sure the user can quit whenever they want
+                    quit = true;
+                    continue;
+                }
+                int ammount = Integer.parseInt(input); // add try catch block later
                 player.bet(ammount);
 
                 player.hit(gameDeck.draw());
@@ -35,21 +40,182 @@ public class PlayBlackjack {
 
                 showState(player, dealer);
 
-                System.out.print("\nCommand: ");
-                String command = reader.readLine();
+                boolean round = true;
+                while(round) {
+                    System.out.print("\nCommand: ");
+                    String command = reader.readLine();
 
-                switch(command) {
-                    case "h":
-                        System.out.println(player.hit(gameDeck.draw()));
-                        break;
-                    case "q":
-                        System.out.println("Quitting game...\n");
-                        quit = true;
-                        break;
+                    switch(command) {
+                        case "h":
+                            Card drawn = gameDeck.draw();
+                            String result = player.hit(drawn);
+                            if(result == "bust!") {
+                                round = false;
+                                System.out.println(drawn);
+                                System.out.println(result);
+                            } else {
+                                System.out.println(drawn);
+                            }
+                            break;
+                        case "s":
+                            while(dealer.handTotal < 17) {
+                                // flip other dealer card
+                                System.out.println(dealer.viewHand());
+                                Card dealerDrawn = gameDeck.draw();
+                                System.out.println(dealerDrawn);
+                                String dResult = dealer.hit(dealerDrawn);
+                                if(dResult == "bust!") {
+                                    System.out.println("Dealer busted, you win $" + ammount);
+                                } else  if(player.handTotal > dealer.handTotal) {
+                                    System.out.println("You beat the dealer!");
+                                } else {
+                                    System.out.println("Dealer beat you!");
+                                }
+                            }
+                            break;
+                        case "q":
+                            System.out.println("Quitting game...\n");
+                            round = false;
+                            quit = true;
+                            break;
+                    }
                 }
+                
             }
         } catch (IOException e) {
             System.out.println("An error occurred: " + e.getMessage());
+        }
+    }
+
+    public static void playGame(BufferedReader reader) {
+        // set up the game deck, the player and the dealer
+        boolean quit = false;
+        Deck gameDeck = new Deck();
+        Player player = new Player();
+        player.funds = 50; // just for testing
+        Player dealer = new Player();
+
+        System.out.println("_________________________________________________");
+        System.out.println("\nShuffling cards...");
+        
+        // shuffle the cards
+        gameDeck.shuffle();
+
+        // the overall loop indicating each hand of blackjack
+        while(!quit) {
+            // user first bets an ammount of money
+            try {
+                System.out.print("\nBet ammount: ");
+                int amount = Integer.parseInt(reader.readLine());
+                player.bet(amount);
+                System.out.println("Betting $" + amount + "...");
+            
+                // deal two cards to the player and two to the dealer
+                System.out.println("\nDealing cards...\n");
+                player.hit(gameDeck.draw());
+                dealer.hit(gameDeck.draw());
+                player.hit(gameDeck.draw());
+                dealer.hit(gameDeck.draw());
+
+                // show the player thier two cards and the dealers top card
+                System.out.println("Your hand:");
+                System.out.println(player.viewHand());
+                System.out.println("");
+                System.out.println("Dealer top card:");
+                System.out.println(dealer.dealerShowing());
+
+                // inner loop for if the player wants to hit or stand while(...) {}
+                boolean busted = false;
+                boolean controlVar = true;
+                while(controlVar) {
+                    System.out.print("\nCommand: ");
+                    String command = reader.readLine();
+                    switch(command) {
+                        case "h":
+                            Card c = gameDeck.draw();
+                            player.hit(c);
+                            System.out.println(player.viewHand());
+                            if(player.handTotal > 21) {
+                                busted = true;
+                                controlVar = false;
+                                break;
+                            }
+                            break;
+                        case "s":
+                        controlVar = false;
+                            break;
+                    }
+                }
+
+                // if player busts then the player loses their money and the dealer only reveals the other hand in the deck
+                if(busted) {
+                    System.out.println("");
+                    System.out.println("You busted! Dealer wins.");
+                    System.out.println("Dealers hand: " + dealer.viewHand());
+                    System.out.println("Remaining funds: " + player.funds);
+                    player.reset();
+                    dealer.reset();
+                    continue;
+                }
+
+                // if the player stands then the dealer reveals the other card in their hand and keeps drawing cards until they hit a hand value of 17
+                boolean dealerBust = false;
+                boolean dealerStop = false;
+                System.out.println("\nDealers hand: " + dealer.viewHand());
+                if(dealer.handTotal < 17) {
+                    while(!dealerStop) {
+                        System.out.println("\nDealing: ");
+                        dealer.hit(gameDeck.draw());
+                        System.out.println(dealer.viewHand());
+                        if(dealer.handTotal >= 17) {
+                            dealerStop = true;
+                            if(dealer.handTotal > 21) {
+                                dealerBust = true;
+                            }
+                        }
+                    }
+                }
+                
+
+                // handle if dealer busted
+                if(dealerBust) {
+                    System.out.println("");
+                    System.out.println("Dealer busted! You won $" + amount);
+                    player.addWin(amount*2);
+                    System.out.println("Total funds: $" + player.funds);
+                }
+
+                // if the dealer has a higher hand value then the player the dealer takes the players betted ammount
+                else if(player.handTotal > dealer.handTotal) {
+                    System.out.println("");
+                    System.out.println("You beat the dealer! You won $" + amount);
+                    player.addWin(amount*2);
+                    System.out.println("Total funds: $" + player.funds);
+                }
+
+                // if the player beats the dealer the dealer matches the player bet
+                else if(dealer.handTotal > player.handTotal) {
+                    System.out.println("");
+                    System.out.println("The dealer beat you! you lost $" + amount);
+                    System.out.println("Total funds: $" + player.funds);
+                }
+
+                else {
+                    System.out.println("");
+                    System.out.println("Push");
+                    player.addWin(amount);
+                    System.out.println("Total funds: $" + player.funds);
+                }
+
+                player.reset();
+                dealer.reset();
+
+                // restart the loop
+            } catch (IOException e) {
+                System.out.println("An error occurred: " + e.getMessage()); // catch any IOExceptions and print to the screen then repeate the loop
+            } catch (NumberFormatException e) {
+                System.out.println("Please enter a valid number for bet amount"); // catch if the user doesn't enter a number for their bet
+            }
         }
     }
 

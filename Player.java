@@ -22,6 +22,11 @@ public class Player {
         return ammount;
     }
 
+    public int addWin(int amount) {
+        funds += amount;
+        return funds;
+    }
+
     public static Player compareHands(Player a, Player b) {
         if (a.handTotal > b.handTotal) {
             return a;
@@ -50,5 +55,10 @@ public class Player {
         }
         return "The wrong ammount of cards in hand for this operation";
         
+    }
+
+    public void reset() {
+        hand.clear();
+        handTotal = 0;
     }
 }
