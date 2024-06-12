@@ -21,7 +21,7 @@ public class PlayBlackjack {
         System.out.println("\nShuffling cards...");
         
         // shuffle the cards
-        // gameDeck.shuffle();
+        gameDeck.shuffle();
 
         // the overall loop indicating each hand of blackjack
         while(!quit) {
@@ -75,10 +75,16 @@ public class PlayBlackjack {
                         case "q":
                             System.out.println("Quitting game...");
                             quit = true;
+                            controlVar = false;
                             break;
                         default:
                             System.out.println("Please enter a valid commad.");
                     }
+                }
+
+                // if the player quit during the hand
+                if(quit) {
+                    continue;
                 }
 
                 // if player busts then the player loses their money and the dealer only reveals the other hand in the deck
