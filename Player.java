@@ -7,11 +7,27 @@ public class Player {
 
     Player(){}
 
+    public void hasAce() {
+        for(int i = 0; i < hand.size(); i++) {
+            Card currCard = hand.get(i);
+            if(currCard.rank == 'A' && !currCard.aceAsOne) {
+                currCard.aceAsOne = true;
+                handTotal = handTotal - 10;
+                System.out.println("here");
+                break;
+            }
+        }
+    }
+
     public String hit(Card c) {
-        hand.add(c);
-        handTotal += c.value;
+        hand.add(c); // add card to hand
+        handTotal += c.value; // adjust the hand total
         if (handTotal > 21) {
-            return "bust!";
+            hasAce(); // see if any of the current cards are aces and if they are make their value 1
+            if(handTotal > 21) { // if the hand total is STILL greater than 21 then the player has busted;
+                return "bust!";
+            }
+            return "";
         } else {
             return "";
         }
@@ -25,16 +41,6 @@ public class Player {
     public int addWin(int amount) {
         funds += amount;
         return funds;
-    }
-
-    public static Player compareHands(Player a, Player b) {
-        if (a.handTotal > b.handTotal) {
-            return a;
-        } else if (b.handTotal > a.handTotal) {
-            return b;
-        } else {
-            return null;
-        }
     }
 
     public String viewHand() {

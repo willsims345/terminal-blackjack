@@ -2,6 +2,7 @@ public class Card {
     char rank;
     String suit;
     int value;
+    boolean aceAsOne = false;
 
     String card = "";
 

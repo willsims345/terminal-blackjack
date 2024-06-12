@@ -9,84 +9,6 @@ public class PlayBlackjack {
         System.out.println("Dealer showing: " + dealer.dealerShowing());
     }
 
-    public static void playGame1(BufferedReader reader) {
-        Deck gameDeck = new Deck();
-        boolean quit = false;
-        Player dealer = new Player();
-        Player player = new Player();
-
-        System.out.println("_________________________________________");
-
-        System.out.println("\nNew game started! Shuffling cards...");
-        gameDeck.shuffle();
-
-        // System.out.println("\nPlease type one of the following commands");
-        // System.out.println("- h (hit)");
-        try{
-            while(!quit) {
-                System.out.println("\nBet ammount: ");
-                String input = reader.readLine();
-                if(input == "q") { // make sure the user can quit whenever they want
-                    quit = true;
-                    continue;
-                }
-                int ammount = Integer.parseInt(input); // add try catch block later
-                player.bet(ammount);
-
-                player.hit(gameDeck.draw());
-                dealer.hit(gameDeck.draw());
-                player.hit(gameDeck.draw());
-                dealer.hit(gameDeck.draw());
-
-                showState(player, dealer);
-
-                boolean round = true;
-                while(round) {
-                    System.out.print("\nCommand: ");
-                    String command = reader.readLine();
-
-                    switch(command) {
-                        case "h":
-                            Card drawn = gameDeck.draw();
-                            String result = player.hit(drawn);
-                            if(result == "bust!") {
-                                round = false;
-                                System.out.println(drawn);
-                                System.out.println(result);
-                            } else {
-                                System.out.println(drawn);
-                            }
-                            break;
-                        case "s":
-                            while(dealer.handTotal < 17) {
-                                // flip other dealer card
-                                System.out.println(dealer.viewHand());
-                                Card dealerDrawn = gameDeck.draw();
-                                System.out.println(dealerDrawn);
-                                String dResult = dealer.hit(dealerDrawn);
-                                if(dResult == "bust!") {
-                                    System.out.println("Dealer busted, you win $" + ammount);
-                                } else  if(player.handTotal > dealer.handTotal) {
-                                    System.out.println("You beat the dealer!");
-                                } else {
-                                    System.out.println("Dealer beat you!");
-                                }
-                            }
-                            break;
-                        case "q":
-                            System.out.println("Quitting game...\n");
-                            round = false;
-                            quit = true;
-                            break;
-                    }
-                }
-                
-            }
-        } catch (IOException e) {
-            System.out.println("An error occurred: " + e.getMessage());
-        }
-    }
-
     public static void playGame(BufferedReader reader) {
         // set up the game deck, the player and the dealer
         boolean quit = false;
@@ -99,14 +21,20 @@ public class PlayBlackjack {
         System.out.println("\nShuffling cards...");
         
         // shuffle the cards
-        gameDeck.shuffle();
+        // gameDeck.shuffle();
 
         // the overall loop indicating each hand of blackjack
         while(!quit) {
             // user first bets an ammount of money
             try {
                 System.out.print("\nBet ammount: ");
-                int amount = Integer.parseInt(reader.readLine());
+                String command = reader.readLine();
+                if(command.equals("q")) {
+                    System.out.println("Quitting game...");
+                    quit = true;
+                    continue;
+                }
+                int amount = Integer.parseInt(command);
                 player.bet(amount);
                 System.out.println("Betting $" + amount + "...");
             
@@ -129,13 +57,13 @@ public class PlayBlackjack {
                 boolean controlVar = true;
                 while(controlVar) {
                     System.out.print("\nCommand: ");
-                    String command = reader.readLine();
+                    command = reader.readLine();
                     switch(command) {
                         case "h":
                             Card c = gameDeck.draw();
-                            player.hit(c);
-                            System.out.println(player.viewHand());
-                            if(player.handTotal > 21) {
+                            String result = player.hit(c);
+                            System.out.println("Your hand: " + player.viewHand());
+                            if(result == "bust!") {
                                 busted = true;
                                 controlVar = false;
                                 break;
@@ -144,6 +72,12 @@ public class PlayBlackjack {
                         case "s":
                         controlVar = false;
                             break;
+                        case "q":
+                            System.out.println("Quitting game...");
+                            quit = true;
+                            break;
+                        default:
+                            System.out.println("Please enter a valid commad.");
                     }
                 }
 
@@ -166,7 +100,7 @@ public class PlayBlackjack {
                     while(!dealerStop) {
                         System.out.println("\nDealing: ");
                         dealer.hit(gameDeck.draw());
-                        System.out.println(dealer.viewHand());
+                        System.out.println("Dealers hand: " + dealer.viewHand());
                         if(dealer.handTotal >= 17) {
                             dealerStop = true;
                             if(dealer.handTotal > 21) {
