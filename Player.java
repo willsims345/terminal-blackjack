@@ -11,7 +11,7 @@ public class Player {
     public void hasAce() {
         for(int i = 0; i < hand.size(); i++) {
             Card currCard = hand.get(i);
-            if(currCard.rank == 'A' && !currCard.aceAsOne) {
+            if(currCard.rank == 'A' && !currCard.aceAsOne) { // FIX error somehwere in this
                 currCard.aceAsOne = true;
                 handTotal = handTotal - 10;
                 break;
