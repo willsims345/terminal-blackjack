@@ -7,6 +7,7 @@ public class Player {
 
     Player(){}
 
+    // handle if the player has an ace and that ace needs to be a 1 or an 11
     public void hasAce() {
         for(int i = 0; i < hand.size(); i++) {
             Card currCard = hand.get(i);
@@ -63,6 +64,7 @@ public class Player {
         
     }
 
+    // reset the players hand and handTotal
     public void reset() {
         hand.clear();
         handTotal = 0;
