@@ -8,3 +8,4 @@
 ## Current limitations
 - No ability to double down
 - No ability to split
+- No bonus for a blackjack

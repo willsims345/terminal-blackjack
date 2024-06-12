@@ -14,7 +14,6 @@ public class Player {
             if(currCard.rank == 'A' && !currCard.aceAsOne) {
                 currCard.aceAsOne = true;
                 handTotal = handTotal - 10;
-                System.out.println("here");
                 break;
             }
         }
